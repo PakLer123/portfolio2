@@ -7,15 +7,32 @@ export const ContactForm: React.FC = () => {
         message: '',
     });
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (!formData.name || !formData.email || !formData.message) {
             alert('Please fill in all fields');
             return;
         }
 
-        // Handle form submission here
-        alert('Thank you for your message! I\'ll get back to you soon.');
-        setFormData({ name: '', email: '', message: '' });
+        try {
+            const response = await fetch('http://localhost:3001/api/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            if (response.ok) {
+                alert('Thank you for your message! I\'ll get back to you soon.');
+                setFormData({ name: '', email: '', message: '' });
+            } else {
+                const errorData = await response.json();
+                alert(`Error: ${errorData.error}`);
+            }
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            alert('Failed to send message. Please try again.');
+        }
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
