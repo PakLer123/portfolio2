@@ -1,6 +1,6 @@
 import React from 'react';
 import { useScrollPosition } from '../hooks/useScrollPosition';
-import { NavLink } from '../types';
+import type {NavLink} from '../types';
 
 export const Navigation: React.FC = () => {
     const scrollPosition = useScrollPosition();
